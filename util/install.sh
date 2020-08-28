@@ -106,7 +106,7 @@ function version_ge {
 PYTHON=${PYTHON:-python}
 PRINTVERSION='import sys; print(sys.version_info)'
 PYTHON_VERSION=unknown
-for python in $PYTHON python2 python3; do
+for python in $PYTHON python3 python2; do
     if $python -c "$PRINTVERSION" |& grep 'major=2'; then
         PYTHON=$python; PYTHON_VERSION=2; PYPKG=python
         break
@@ -180,7 +180,7 @@ function mn_deps {
 
     echo "Installing Mininet core"
     pushd $MININET_DIR/mininet
-    sudo PYTHON=${PYTHON} make install
+    sudo PYTHON=${PYTHON} make PYTHON=${PYTHON} install
     popd
 }
 
@@ -480,9 +480,9 @@ function ryu {
     echo "Installing RYU..."
 
     # install Ryu dependencies"
-    $install autoconf automake g++ libtool python make
+    $install autoconf automake g++ libtool make
     if [ "$DIST" = "Ubuntu" -o "$DIST" = "Debian" ]; then
-        $install gcc python-pip python-dev libffi-dev libssl-dev \
+        $install gcc  python-dev libffi-dev libssl-dev \
             libxml2-dev libxslt1-dev zlib1g-dev
     fi
 
@@ -492,8 +492,8 @@ function ryu {
     cd ryu
 
     # install ryu
-    sudo pip install -r tools/pip-requires -r tools/optional-requires \
-        -r tools/test-requires
+    sudo -H ${PYTHON} -m pip install -r tools/pip-requires \
+	-r tools/optional-requires -r tools/test-requires
     sudo python setup.py install
 
     # Add symbolic link to /usr/bin
