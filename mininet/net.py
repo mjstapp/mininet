@@ -97,7 +97,7 @@ from itertools import chain, groupby
 from math import ceil
 
 from mininet.cli import CLI
-from mininet.log import info, error, debug, output, warn
+from mininet.log import info, error, debug, output, warning
 from mininet.node import ( Node, Host, OVSKernelSwitch, DefaultController,
                            Controller )
 from mininet.nodelib import NAT
@@ -194,11 +194,11 @@ class Mininet( object ):
                 break
             sleep( delay )
             time += delay
-        warn( 'Timed out after %d seconds\n' % time )
+        warning( 'Timed out after %d seconds\n' % time )
         for switch in remaining:
             if not switch.connected():
-                warn( 'Warning: %s is not connected to a controller\n'
-                      % switch.name )
+                warning( 'Warning: %s is not connected to a controller\n'
+                         % switch.name )
             else:
                 remaining.remove( switch )
         return not remaining

@@ -1,7 +1,7 @@
 "Utility functions for Mininet."
 
 
-from mininet.log import output, info, error, warn, debug
+from mininet.log import output, info, error, warning, debug
 
 from time import sleep
 from resource import getrlimit, setrlimit, RLIMIT_NPROC, RLIMIT_NOFILE
@@ -528,8 +528,8 @@ def fixLimits():
         sysctlTestAndSet( 'kernel.pty.max', 20000 )
     # pylint: disable=broad-except
     except Exception:
-        warn( "*** Error setting resource limits. "
-              "Mininet's performance may be affected.\n" )
+        warning( "*** Error setting resource limits. "
+                 "Mininet's performance may be affected.\n" )
     # pylint: enable=broad-except
 
 

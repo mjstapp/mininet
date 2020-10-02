@@ -60,7 +60,7 @@ import select
 from subprocess import Popen, PIPE
 from time import sleep
 
-from mininet.log import info, error, warn, debug
+from mininet.log import info, error, warning, debug
 from mininet.util import ( quietRun, errRun, errFail, moveIntf, isShellBuiltin,
                            numCores, retry, mountCgroups, BaseString, decode,
                            encode, getincrementaldecoder, Python3, which )
@@ -376,7 +376,7 @@ class Node( object ):
             self.sendCmd( *args, **kwargs )
             return self.waitOutput( verbose )
         else:
-            warn( '(%s exited - ignoring cmd%s)\n' % ( self, args ) )
+            warning( '(%s exited - ignoring cmd%s)\n' % ( self, args ) )
 
     def cmdPrint( self, *args):
         """Call cmd and printing its output
@@ -467,8 +467,8 @@ class Node( object ):
         if ports:
             return self.intfs[ min( ports ) ]
         else:
-            warn( '*** defaultIntf: warning:', self.name,
-                  'has no interfaces\n' )
+            warning( '*** defaultIntf: warning:', self.name,
+                     'has no interfaces\n' )
 
     def intf( self, intf=None ):
         """Return our interface object with given string name,
@@ -1474,8 +1474,8 @@ class NOX( Controller ):
            name: name to give controller
            noxArgs: arguments (strings) to pass to NOX"""
         if not noxArgs:
-            warn( 'warning: no NOX modules specified; '
-                  'running packetdump only\n' )
+            warning( 'warning: no NOX modules specified; '
+                     'running packetdump only\n' )
             noxArgs = [ 'packetdump' ]
         elif type( noxArgs ) not in ( list, tuple ):
             noxArgs = [ noxArgs ]
@@ -1500,8 +1500,8 @@ class Ryu( Controller ):
         homeDir = quietRun( 'printenv HOME' ).strip( '\r\n' )
         ryuCoreDir = '%s/ryu/ryu/app/' % homeDir
         if not ryuArgs:
-            warn( 'warning: no Ryu modules specified; '
-                  'running simple_switch only\n' )
+            warning( 'warning: no Ryu modules specified; '
+                     'running simple_switch only\n' )
             ryuArgs = [ ryuCoreDir + 'simple_switch.py' ]
         elif type( ryuArgs ) not in ( list, tuple ):
             ryuArgs = [ ryuArgs ]
@@ -1548,15 +1548,15 @@ class RemoteController( Controller ):
 
         if self.port is None:
             self.port = 6653
-            warn( "Setting remote controller"
-                  " to %s:%d\n" % ( self.ip, self.port ))
+            warning( "Setting remote controller"
+                     " to %s:%d\n" % ( self.ip, self.port ))
 
     def isListening( self, ip, port ):
         "Check if a remote controller is listening at a specific ip and port"
         listening = self.cmd( "echo A | telnet -e A %s %d" % ( ip, port ) )
         if 'Connected' not in listening:
-            warn( "Unable to contact the remote controller"
-                  " at %s:%d\n" % ( ip, port ) )
+            warning( "Unable to contact the remote controller"
+                     " at %s:%d\n" % ( ip, port ) )
             return False
         else:
             return True
